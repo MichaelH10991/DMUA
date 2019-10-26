@@ -1,12 +1,16 @@
 #!/bin/bash
 
-# the master list
-masters_list=("292031" "312342")
+timestamp() {
+  date +"%T"
+}
 
-# exports the list and  saves state
-bash main.sh "${masters_list[@]}"
+# the master list
+masters_list=("292031" "238337")
+
+# creates state
+# bash main.sh "${masters_list[@]}"
 
 # cron the cron which compares state
 bash cron.sh "${masters_list[@]}"
 
-mv out.txt outputs/
+mv out.txt outputs/"$(timestamp)"out.txt

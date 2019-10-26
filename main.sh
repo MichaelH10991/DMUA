@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# export masters_list=("292031" "312342")
-masters_list=("$@")
+echo "refreshing state..."
+# masters_list=("$@")
+masters_list=("292031" "238337")
 
 for i in "${!masters_list[@]}"; do
-  echo ${masters_list[$i]}
-  res=$(curl "https://api.discogs.com/masters/${masters_list[$i]}" | jq '.')
+  res=$(curl -s "https://api.discogs.com/masters/${masters_list[$i]}" | jq '.')
   # echo $res
   echo $res >> unparsed.json
 done
@@ -13,6 +13,8 @@ done
 #  parsing response into an array of objects
 cat unparsed.json | jq -s > resources/list.json
 rm unparsed.json
+
+echo "state updated."
 
 # compare with file if empty create file and put number for sale for each release
 
