@@ -2,7 +2,7 @@
 A Service that updates me when someone adds a listing for an album I am
 watching. 
 
-## What does it do?
+## What does it do? (What will it do)
 
 - Alerts when a new album gets listed (via email)
 - Lists the average price for an album I am watching
