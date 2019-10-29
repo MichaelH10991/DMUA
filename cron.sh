@@ -14,6 +14,7 @@ route=resources/list.json
 # cat $route | jq 'map( { id, artists: [.artists[0].name], title, num_for_sale, lowest_price } )'
 
 for i in "${!masters_list[@]}"; do
+  time="$(timestamp)"
   master_id=${masters_list[$i]}
   name=$(cat $route | jq '.[] | select(.id=='$master_id') | .title')
   artist=$(cat $route | jq '.[] | select(.id=='$master_id') | .artists[0].name')
@@ -22,14 +23,14 @@ for i in "${!masters_list[@]}"; do
   res=$(curl -s "https://api.discogs.com/masters/$master_id" | jq '.num_for_sale')
 
   if [ $saved_for_sale -lt $res ]; then
-    echo -e "${RED_BACK}$(($res-$saved_for_sale))${DEFAULT_BACK} ${GREEN}$artist $name${WHITE} record(s) have been listed"
-    echo "$(($res-$saved_for_sale)) $name record(s) have been listed" >> out.txt
+    echo -e "$time: ${RED_BACK}$(($res-$saved_for_sale))${DEFAULT_BACK} ${GREEN}$artist: $name${WHITE} record(s) have been listed"
+    echo "$time: $(($res-$saved_for_sale)) $artist: $name record(s) have been listed" >> outputs/out.txt
   elif [ $saved_for_sale -gt $res ]; then
-    echo -e "${RED_BACK}$(($saved_for_sale-$res))${DEFAULT_BACK} ${GREEN}$artist $name${WHITE} record(s) have been sold/unlisted"
-    echo "$(($saved_for_sale-$res)) $name record(s) have been sold/unlisted" >> out.txt
+    echo -e "$time: ${RED_BACK}$(($saved_for_sale-$res))${DEFAULT_BACK} ${GREEN}$artist: $name${WHITE} record(s) have been sold/unlisted"
+    echo "$time: $(($saved_for_sale-$res)) $artist: $name record(s) have been sold/unlisted" >> outputs/out.txt
   else
-    echo -e "nothing has changed for ${GREEN}$artist $name${WHITE}: ${RED_BACK}$saved_for_sale:$res${DEFAULT_BACK}"
-    echo "nothing has changed for $name: $saved_for_sale:$res" >> out.txt
+    echo -e "$time: nothing has changed for ${GREEN}$artist: $name${WHITE}: ${RED_BACK}$saved_for_sale:$res${DEFAULT_BACK}"
+    echo "$time: nothing has changed for $artist: $name: $saved_for_sale:$res" >> outputs/out.txt
   fi
 done
 

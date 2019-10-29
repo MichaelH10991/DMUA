@@ -13,4 +13,4 @@ masters_list=("292031" "238337")
 # cron the cron which compares state
 bash cron.sh "${masters_list[@]}"
 
-mv out.txt outputs/"$(timestamp)"out.txt
+# mv out.txt outputs/"$(timestamp)"out.txt

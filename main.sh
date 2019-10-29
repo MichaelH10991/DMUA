@@ -6,7 +6,6 @@ masters_list=("292031" "238337")
 
 for i in "${!masters_list[@]}"; do
   res=$(curl -s "https://api.discogs.com/masters/${masters_list[$i]}" | jq '.')
-  # echo $res
   echo $res >> unparsed.json
 done
 
